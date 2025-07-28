@@ -1,0 +1,11 @@
+# Python cache
+__pycache__/
+*.py[cod]
+# Environment
+*.env
+.env
+# Logs
+*.log
+# Node modules and build
+node_modules/
+dist/
