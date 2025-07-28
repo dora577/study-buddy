@@ -6,6 +6,7 @@ const Chat: React.FC = () => {
   const [messages, setMessages] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const wsRef = useRef<WebSocket>();
+  const messagesRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ws = createWebSocket();
@@ -13,6 +14,13 @@ const Chat: React.FC = () => {
     ws.onmessage = (e) => setMessages((m) => [...m, `Bot: ${e.data}`]);
     return () => ws.close();
   }, []);
+
+  useEffect(() => {
+    const el = messagesRef.current;
+    if (el) {
+      el.scrollTop = el.scrollHeight;
+    }
+  }, [messages]);
 
   const send = () => {
     const text = inputRef.current?.value;
@@ -25,7 +33,7 @@ const Chat: React.FC = () => {
 
   return (
     <div>
-      <div style={{ height: 300, overflowY: "auto" }}>
+      <div ref={messagesRef} style={{ height: 300, overflowY: "auto" }}>
         {messages.map((m, i) => (
           <ChatBubble key={i} message={m} />
         ))}

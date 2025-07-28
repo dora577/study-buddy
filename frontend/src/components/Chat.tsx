@@ -4,13 +4,22 @@ const Chat: React.FC = () => {
   const [messages, setMessages] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const wsRef = useRef<WebSocket>();
+  const messagesRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const url = `${import.meta.env.VITE_API_WS || "ws://localhost:8000"}/ws/chat`;
     wsRef.current = new WebSocket(url);
-    wsRef.current.onmessage = (e) => setMessages((m) => [...m, `Bot: ${e.data}`]);
+    wsRef.current.onmessage = (e) =>
+      setMessages((m) => [...m, `Bot: ${e.data}`]);
     return () => wsRef.current?.close();
   }, []);
+
+  useEffect(() => {
+    const el = messagesRef.current;
+    if (el) {
+      el.scrollTop = el.scrollHeight;
+    }
+  }, [messages]);
 
   const send = () => {
     const text = inputRef.current?.value;
@@ -23,7 +32,7 @@ const Chat: React.FC = () => {
 
   return (
     <div>
-      <div style={{ height: 300, overflowY: "auto" }}>
+      <div ref={messagesRef} style={{ height: 300, overflowY: "auto" }}>
         {messages.map((m, i) => (
           <div key={i}>{m}</div>
         ))}
