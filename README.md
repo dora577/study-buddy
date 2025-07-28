@@ -12,18 +12,17 @@ This project is a study assistant which can:
 
 ## Development Setup
 
-### Backend
+### API
 ```bash
-cd backend
-cp .env.example .env
-# Fill in environment variables in .env
+cd api/app
+# Copy or create .env with the required variables (e.g. DATABASE_URL, NEO4J_URI, LANGFUSE_API_KEY)
 pip install -r requirements.txt
-uvicorn backend.app:app --reload
+uvicorn main:app --reload
 ```
 
-### Frontend
+### Client
 ```bash
-cd frontend
+cd client
 npm install
 npm run dev
 ```
